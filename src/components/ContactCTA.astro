@@ -1,0 +1,44 @@
+---
+interface Props {
+  id?: string;
+  phone?: string;
+  message?: string;
+  title?: string;
+  subtitle?: string;
+  image?: string; // Ruta local o URL
+}
+
+const {
+  id = "contacto",
+  phone = "51927036783",
+  message = "¡Hola! Vengo desde la web y quiero realizar una cotización.",
+  title = "¿Listo para cotizar?",
+  subtitle = "Cuéntanos qué necesitas (tamaño, cantidad, material y si tienes diseño). Te respondemos por WhatsApp.",
+  image = "/src/assets/mockup-sticker.png",
+} = Astro.props;
+
+const waLink = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+import Whatsapp from './icons/Whatsapp.astro';
+---
+<section id={id} class="section contact-cta">
+  <div class="section__container">
+    <div class="contact-cta__card">
+      <!-- Columna Izquierda -->
+      <div class="contact-cta__left">
+        <h3 class="contact-cta__title">{title}</h3>
+        <p class="contact-cta__subtitle">{subtitle}</p>
+
+        <a href={waLink} target="_blank" rel="noopener" class="cta-wa" aria-label="Escríbenos por WhatsApp">
+           <Whatsapp />
+          Escríbenos por <strong>WhatsApp</strong>
+        </a>
+      </div>
+
+      <!-- Columna Derecha -->
+      <div class="contact-cta__right">
+        <img src={'/Contact/contactmonkey.webp'} alt="Mockup Sticker Monkey" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>

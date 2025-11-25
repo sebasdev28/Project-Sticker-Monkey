@@ -1,0 +1,28 @@
+---
+import SectionContainer from "../components/SectionContainer.astro";
+import Layout from "../layouts/Layout.astro";
+import HeroNeon from "../components/HeroNeon.astro";
+import Services from "../components/Services.astro";
+import ContactCTA from "../components/ContactCTA.astro";
+import FAQCards from "../components/FAQCards.astro";
+---
+
+<Layout
+  title="Portafolio de Sebastian - Desarrollador y Programador Web"
+  description="Contrata a Sebastian para crear aplicación web o móvil, rápida y responsiva. Experimentado en el desarrollo con HTML, CSS, JavaScript, PHP y bases de datos."
+>
+  <main class="px-4">
+    <SectionContainer class="py-18">
+      <HeroNeon />
+    </SectionContainer>
+    <SectionContainer>
+      <Services />
+    </SectionContainer>
+    <SectionContainer>
+      <FAQCards />
+    </SectionContainer>
+    <SectionContainer>
+      <ContactCTA />
+    </SectionContainer>
+  </main>
+</Layout>

@@ -1,0 +1,58 @@
+---
+const { id = "navbar" } = Astro.props;
+const logostickermonkeyAlt = "Logo de Sticker Monkey";
+const desktopLogo = "/Logo/pcmonkey.webp";
+const mobileLogo = "/Logo/mobilemonkey.webp";
+
+---
+<header id={id} class="site-nav" data-nav>
+  <nav class="bg-transparent border-0">
+    <div class="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between p-4">
+
+      <!-- LOGO RESPONSIVE -->
+      <a href="/" class="flex items-center gap-3" aria-label="Ir al inicio">
+        <picture>
+          <!-- Móvil (<=768px) -->
+          <source media="(max-width: 768px)" srcset={`${mobileLogo} 1x, ${mobileLogo} 2x`} />
+          <!-- Desktop (default) -->
+          <img src={desktopLogo} alt={logostickermonkeyAlt} class="brand__img" loading="eager" decoding="async" />
+        </picture>
+      </a>
+
+      <!-- menú -->
+      <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <ul class="flex md:space-x-8 text-white mt-3 md:mt-0">
+          <li><a href="#inicio"     class="block py-2 px-3 hover:text-cyan-300 md:p-0">Inicio</a></li>
+          <li><a href="#servicios"  class="block py-2 px-3 hover:text-cyan-300 md:p-0">Servicios</a></li>
+          <li><a href="#faq"        class="block py-2 px-3 hover:text-cyan-300 md:p-0">FAQ</a></li>
+          <li><a href="#contacto"   class="block py-2 px-3 hover:text-cyan-300 md:p-0">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const header = document.querySelector("[data-nav]");
+    const menu = document.getElementById("navbar-default");
+    const btn = document.querySelector('[data-collapse-toggle="navbar-default"]');
+
+    const apply = () => {
+      if (!header) return;
+      const scrolled = window.scrollY > 8;
+      const open = !!menu && !menu.classList.contains("hidden");
+      header.classList.toggle("is-scrolled", scrolled || open);
+    };
+
+    apply();
+    window.addEventListener("scroll", apply, { passive: true });
+    btn?.addEventListener("click", () => setTimeout(apply, 10));
+  </script>
+
+  <style>
+    /* Tamaños del logo por dispositivo */
+    .brand__img { height: 100px; width: auto; display: block; }
+    @media (max-width: 768px) {
+      .brand__img { height:150px; margin-left: 90px;}
+    }
+  </style>
+</header>

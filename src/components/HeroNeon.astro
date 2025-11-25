@@ -1,0 +1,57 @@
+---
+import ClockBolt from "./icons/Clock-bolt.astro";
+import Shield from "./icons/Shield.astro";
+import Map from "./icons/Map.astro";
+const {
+  id = "inicio",
+  waLink = "#contacto",
+  galleryHref = "#portafolio",
+  title = "TUS IDEAS, EN VINILO. IMPRIME, PEGA, DESTACA.",
+  subtitle = "Calidad profesional para tu marca o tu estilo. Stickers y vinilos resistentes para interiores y exteriores.",
+  // 👉 coloca tu imagen en /public y cambia la ruta si quieres
+
+  imageAlt = "Muestra de stickers y vinilos",
+} = Astro.props;
+---
+
+<section id={id} class="hero hero--neon theme-urban">
+  <div class="container hero--neon__grid">
+    <!-- Izquierda -->
+    <div class="hero--neon__left">
+      <h1 class="hero--neon__title">{title}</h1>
+      <p class="hero--neon__subtitle py-5">{subtitle}</p>
+
+      <div class="hero--neon__ctas">
+        <a class="btn btn--electric" href={waLink}>QUIERO COTIZAR</a>
+      </div>
+
+      <ul class="hero--neon__bullets py-5">
+        <li>
+          <ClockBolt />
+          <span class='aria-hidden="true"'></span><b>Producción rápida</b> · Duradero
+        </li>
+
+        <li>
+          <Shield />
+          <span class='aria-hidden="true"'></span><b>Resistente</b> · Agua, sol y
+          rayones
+        </li>
+        <li>
+          <Map />
+          <span class='aria-hidden="true"'></span><b>Envío</b> · A todo el país
+        </li>
+      </ul>
+    </div>
+
+    <!-- Derecha: UNA sola imagen -->
+    <div class="hero--neon__right">
+      <figure class="hero-media">
+        <img
+          src={"/imagebackgroundmonkey.webp"}
+          alt={imageAlt}
+          loading="eager"
+        />
+      </figure>
+    </div>
+  </div>
+</section>

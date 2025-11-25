@@ -1,0 +1,294 @@
+---
+interface Props {
+  id?: string;
+  brandName?: string;
+  tagline?: string;
+  phone?: string;
+  email?: string;
+  hoursTitle?: string;
+  hoursLines?: string[];
+  waMessage?: string;
+  socialTitle?: string;
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+}
+import TikTok from "./icons/TikTok.astro";
+import Whatsapp from "./icons/Whatsapp.astro";
+import Facebook from "./icons/Facebook.astro";
+import Instagram from "./icons/Instagram.astro";
+
+const {
+  id = "footer",
+  brandName = "Sticker Monkey",
+  phone = "51927036783",
+  email = "stickermonkey@correo.com",
+  hoursTitle = "Atención",
+  hoursLines = [
+    "Lunes a Sábado · 9:00 AM a 18:00",
+    "Producción urgente según disponibilidad",
+  ],
+  waMessage = "¡Hola! Vengo desde la web y quiero realizar una cotización.",
+  socialTitle = "Síguenos",
+  facebook = "sticker.monkey.pe",
+  instagram = "stickermonkey.pe",
+  tiktok = "stickermonkey.pe",
+} = Astro.props;
+
+const year = new Date().getFullYear();
+const waLink = `https://wa.me/${phone}?text=${encodeURIComponent(waMessage)}`;
+const toUrl = (val: string, base: string) =>
+  !val ? "" : val.startsWith("http") ? val : base + val.replace(/^@/, "");
+const fbLink = toUrl(
+  facebook,
+  "https://www.facebook.com/profile.php?id=61578178203409&rdid=y1MFCNDjhGAvJ1gM#"
+);
+const igLink = toUrl(
+  instagram,
+  "https://www.instagram.com/stickermonkey5?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+);
+const ttLink = toUrl(
+  tiktok,
+  "https://www.tiktok.com/@sticker.monkey7?is_from_webapp=1&sender_device=pc"
+);
+---
+
+<footer id={id} class="site-footer">
+  <div class="container">
+    <div class="foot">
+      <!-- Col 1: Marca -->
+      <div class="foot-col brand-col">
+        <div class="brand">
+          <span class="brand-logo" aria-hidden="true">
+            <img src="/Logo/mobilemonkey.webp" alt="{brandName} Logo" />
+          </span>
+        </div>
+        <p class="copyright">
+          © {year}
+          {brandName}. Todos los derechos reservados.
+        </p>
+      </div>
+
+      <!-- Col 2: Atención -->
+      <div class="foot-col">
+        <strong class="foot-heading">{hoursTitle}</strong>
+        {hoursLines.map((l) => <small class="muted">{l}</small>)}
+      </div>
+
+      <!-- Col 3: Contacto -->
+      <div class="foot-col">
+        <strong class="foot-heading">Contacto</strong>
+        <small id="foot-phone" class="muted">
+          <a href={`tel:+${phone}`} class="link">
+            +{phone.replace(/^51/, "51 ")}
+          </a>
+        </small>
+        <small class="muted">
+          <a href={`mailto:${email}`} class="link">{email}</a>
+        </small>
+      </div>
+
+      <!-- Col 4: Redes -->
+      <div class="foot-col">
+        <strong class="foot-heading">{socialTitle}</strong>
+        <ul class="socials">
+          {
+            facebook && (
+              <li>
+                <a
+                  href={fbLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  class="social-btn"
+                >
+                  <Facebook />
+                </a>
+              </li>
+            )
+          }
+          {
+            instagram && (
+              <li>
+                <a
+                  href={igLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  class="social-btn"
+                >
+                  <Instagram />
+                </a>
+              </li>
+            )
+          }
+          {
+            tiktok && (
+              <li>
+                <a
+                  href={ttLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok"
+                  class="social-btn"
+                >
+                  <TikTok />
+                </a>
+              </li>
+            )
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón flotante WhatsApp -->
+  <div class="wa-fab">
+    <a
+      href={waLink}
+      target="_blank"
+      rel="noopener"
+      aria-label="Chatea por WhatsApp"
+    >
+      <Whatsapp />
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  </div>
+
+  <style>
+    /* contenedor */
+    .container {
+      max-width: 1120px;
+      margin-inline: auto;
+      padding-inline: 24px;
+    }
+
+    /* === GRID 4 COLUMNAS === */
+    .foot {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 22px;
+      align-items: start;
+    }
+
+    .foot-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      order: 0;
+    }
+
+    /* === Marca y copyright === */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+    }
+
+    .brand-logo img {
+      width: auto;
+      height: 110px;
+      border-radius: 10px;
+    }
+
+    .brand-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .brand-col .copyright {
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: #a9b9ca;
+      text-align: center; /* 👈 solo debajo del logo */
+      max-width: 240px;
+      line-height: 1.4;
+    }
+
+    /* === Texto general === */
+    .foot-heading {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .muted {
+      color: #a9b9ca;
+    }
+
+    .link {
+      color: #d7ecff;
+      text-decoration: none;
+    }
+
+    .link:hover {
+      color: var(--electric);
+    }
+
+    /* === Redes sociales === */
+    .socials {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 0;
+    }
+
+    .social-btn {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #dff5ff;
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.2s ease;
+    }
+
+    .social-btn:hover {
+      background: rgba(0, 191, 255, 0.15);
+      box-shadow: 0 0 18px var(--electric-soft);
+      transform: translateY(-2px);
+    }
+
+    .social-btn :is(svg) {
+      width: 22px;
+      height: 22px;
+      color: inherit;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 960px) {
+      .foot {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 12px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .foot {
+        grid-template-columns: 1fr; /* 1 columna */
+        gap: 16px;
+      }
+
+      /* manda el logo + copyright al final */
+      .brand-col {
+        order: 99; /* el último */
+        align-items: center; /* centrado solo en móvil */
+      }
+
+      .brand-col .copyright {
+        text-align: center;
+        max-width: none;
+        margin-inline: auto;
+        margin-top: 8px;
+      }
+    }
+  </style>
+</footer>

@@ -1,0 +1,124 @@
+---
+const { id = "servicios" } = Astro.props;
+
+const services = [
+  {
+    key: "vinilos",
+    title: "Vinilos · Stickers & Calcomanías",
+    desc: "Adhesivos personalizados en vinilo premium: desde stickers para objetos hasta calcomanías de gran formato.",
+    bullets: [
+      "Durabilidad interior/exterior (agua, sol, rayones)",
+      "Troquelado a medida",
+      "Acabados: mate, brillante, holográfico",
+    ],
+    icon: "sticker",
+    img: " /ServicesImages/vinilomonkey.webp",
+  },
+  {
+    key: "imprenta",
+    title: "Imprenta · Offset & Digital",
+    desc: "Volantes, tarjetas, folletos, afiches y papelería corporativa con acabados profesionales.",
+    bullets: [
+      "Tirajes cortos y altos",
+      "Variedad de papeles y tamaños",
+      "Acabados especiales",
+    ],
+    icon: "print",
+    img: " /ServicesImages/imprentamonkey.webp",
+  },
+  {
+    key: "merch",
+    title: "Merchandising · Promocionales",
+    desc: "Polos, gorras, tazas y más con tu logo o diseño para campañas y eventos.",
+    bullets: [
+      "Amplia gama de productos",
+      "Personalización total",
+      "Diseños para impacto de marca",
+    ],
+    icon: "gift",
+    img: " /ServicesImages/merchmonkey.webp",
+  },
+  {
+    key: "diseno",
+    title: "Diseño Gráfico",
+    desc: "Desde cero: logos, artes para stickers, piezas para merchandising o cualquier necesidad gráfica.",
+    bullets: [
+      "Creatividad y originalidad",
+      "Adaptado a tu marca",
+      "Listo para impresión",
+    ],
+    icon: "pen",
+    img: " /ServicesImages/diseñograficomonkey.webp",
+  },
+  {
+    key: "giga",
+    title: "Gigantografías · Gran Formato",
+    desc: "Lonas, banners, vallas, fondos de evento y murales con alta resolución.",
+    bullets: [
+      "Materiales resistentes",
+      "Interior y exterior",
+      "Montaje profesional",
+    ],
+    icon: "banner",
+    img: " /ServicesImages/gigantografiamonkey.webp",
+  },
+  {
+    key: "ploteo",
+    title: "Ploteos & Rotulados",
+    desc: "Vehiculares, vitrinas, paredes y más con vinilos de larga duración.",
+    bullets: [
+      "Diseño personalizado",
+      "Instalación experta",
+      "Protección y resistencia",
+    ],
+    icon: "car",
+    img: " /ServicesImages/ploteosmonkey.webp",
+  },
+];
+---
+
+<section id={id} class="section services">
+  <div class="section__container">
+    <header class="section__header services__header">
+      <h2 class="section__title">NUESTROS SERVICIOS</h2>
+      <p class="section__subtitle">
+        Soluciones adhesivas para cada idea. <br />
+        Calidad y personalización sin límites.
+      </p>
+    </header>
+
+    <div class="services__grid">
+      {
+        services.map((s) => (
+          <article class="service-card">
+            <div class="service-card__media">
+              <img src={s.img} alt={s.title} loading="lazy" />
+              <span
+                class={`service-icon service-icon--${s.icon}`}
+                aria-hidden="true"
+              />
+            </div>
+
+            <div class="service-card__body">
+              <h3 class="service-card__title">{s.title}</h3>
+              <p class="service-card__desc">{s.desc}</p>
+
+              <ul class="service-list">
+                {s.bullets.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="service-card__foot">
+              <a href="#contacto" class="btn btn--electric">
+                Cotizar
+              </a>
+               
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

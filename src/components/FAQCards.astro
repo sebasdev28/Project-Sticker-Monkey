@@ -1,0 +1,332 @@
+---
+type FaqItem = { id?: string; q: string; a: string };
+type Group = { title: string; items: FaqItem[] };
+
+interface Props {
+  id?: string;
+  heading?: string;
+  subheading?: string;
+  groups?: Group[];
+}
+
+const {
+  id = "faq",
+  heading = "PREGUNTAS FRECUENTES",
+  subheading = "Resolvemos tus dudas más comunes sobre nuestros servicios",
+  groups = [
+    {
+      title: "Sobre Calidad y Materiales",
+      items: [
+        {
+          id: "agua",
+          q: "¿Son los stickers resistentes al agua y al sol?",
+          a: "Sí. Trabajamos vinilo premium con laminado mate o brillo que protege contra agua, sol y rayones. Apto para interior y exterior.",
+        },
+        {
+          id: "acabados",
+          q: "¿Qué acabados ofrecen?",
+          a: "Mate, brillante, holográfico, metalizado y transparente. También troquel a la forma exacta de tu diseño.",
+        },
+      ],
+    },
+    {
+      title: "Sobre Pedidos, Diseño y Procesos",
+      items: [
+        {
+          id: "archivo",
+          q: "¿Qué archivo necesito enviar?",
+          a: "PDF/AI/SVG o PNG/JPG a 300 DPI con fondo transparente. Si no tienes arte, nuestro equipo puede diseñarlo.",
+        },
+        {
+          id: "tiempos",
+          q: "¿Cuánto demora mi pedido?",
+          a: "Producción estándar: 2–4 días hábiles. Urgentes: el mismo día o 24h según disponibilidad.",
+        },
+      ],
+    },
+  ],
+} = Astro.props;
+---
+
+<section id={id} class="faq-showcase">
+  <div class="faq-bg"></div>
+
+  <div class="section__container">
+    <header class="faq-head">
+      <div class="faq-head__row">
+        <h2 class="faq-title">{heading}</h2>
+        <img
+          src="/Logo/pcmonkey.webp"
+          alt="Logo Sticker Monkey"
+          class="faq-logo"
+        />
+    
+      </div>
+      <p class="faq-sub">
+        Resolvemos tus dudas más comunes sobre nuestros servicios
+      </p>
+    </header>
+
+    {
+      groups.map((g) => (
+        <section class="faq-group">
+          <h3 class="faq-group__title">{g.title}</h3>
+
+          <div class="faq-grid" role="list">
+            {g.items.map((it, idx) => {
+              const pid =
+                it.id ?? `${g.title.replace(/\s+/g, "-").toLowerCase()}-${idx}`;
+              const panelId = `${pid}-panel`;
+              return (
+                <article class="faq-card" role="listitem">
+                  <button
+                    id={pid}
+                    class="faq-card__head"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls={panelId}
+                  >
+                    <div class="faq-card__text">
+                      <h4 class="faq-card__q">{it.q}</h4>
+                      <p class="faq-card__preview">{it.a}</p>
+                    </div>
+                    <span class="faq-pill" aria-hidden="true">
+                      ›
+                    </span>
+                  </button>
+
+                  <div
+                    id={panelId}
+                    class="faq-card__body"
+                    role="region"
+                    aria-labelledby={pid}
+                    hidden
+                  >
+                    <p class="faq-card__a">{it.a}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <script>
+    const root = document.currentScript?.closest(
+      ".faq-showcase"
+    ) as HTMLElement | null;
+    const heads =
+      root?.querySelectorAll<HTMLButtonElement>(".faq-card__head") ?? null;
+
+    function closeAll(except?: HTMLButtonElement) {
+      heads?.forEach((h) => {
+        if (h === except) return;
+        const id = h.getAttribute("aria-controls") ?? "";
+        const panel = document.getElementById(id) as HTMLElement | null;
+        const card = h.closest(".faq-card") as HTMLElement | null;
+        if (!panel || !card) return;
+        h.setAttribute("aria-expanded", "false");
+        panel.hidden = true;
+        panel.style.maxHeight = "0px";
+        card.removeAttribute("data-open");
+      });
+    }
+
+    function toggle(btn: HTMLButtonElement) {
+      const id = btn.getAttribute("aria-controls") ?? "";
+      const panel = document.getElementById(id) as HTMLElement | null;
+      const card = btn.closest(".faq-card") as HTMLElement | null;
+      if (!panel || !card) return;
+
+      const open = btn.getAttribute("aria-expanded") === "true";
+      if (open) {
+        btn.setAttribute("aria-expanded", "false");
+        panel.hidden = true;
+        panel.style.maxHeight = "0px";
+        card.removeAttribute("data-open");
+      } else {
+        closeAll(btn); // deja solo si quieres “uno a la vez”
+        btn.setAttribute("aria-expanded", "true");
+        panel.hidden = false;
+        panel.style.maxHeight = panel.scrollHeight + "px";
+        card.setAttribute("data-open", "true");
+      }
+    }
+
+    heads?.forEach((h) => {
+      h.addEventListener("click", () => toggle(h));
+      h.addEventListener("keydown", (e: KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggle(h);
+        }
+      });
+    });
+  </script>
+</section>
+
+<style>
+  /* ===== FAQ – encabezado con logo ===== */
+  .faq-showcase {
+    position: relative;
+    padding: 40px 0 56px;
+    background: transparent; /* sin fondo, usa el body */
+  }
+
+  .faq-head__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .faq-title {
+    margin: 0;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #04c0ff;
+    letter-spacing: 0.6px;
+    font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  }
+
+  .faq-logo {
+    height: 108px;
+    width: auto;
+    filter: drop-shadow(0 0 6px rgba(4, 192, 255, 0.4));
+    transition: transform 0.2s ease;
+  }
+  .faq-logo:hover {
+    transform: scale(1.05);
+  }
+
+  .faq-sub {
+    color: #d9e8f6;
+    margin: 0.25rem 0 0;
+  }
+
+  /* resto del CSS (tarjetas, grid, pill, etc.) permanece igual */
+
+  .faq-head {
+    margin-bottom: 16px;
+  }
+  .faq-title {
+    margin: 0;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #04c0ff;
+    letter-spacing: 0.6px;
+    font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  }
+  .faq-sub {
+    color: #d9e8f6;
+    margin: 0.25rem 0 0;
+  }
+
+  .faq-group {
+    margin-top: 18px;
+  }
+  .faq-group__title {
+    margin: 0 0 12px;
+    color: #cfe6f5;
+    font-weight: 800;
+    padding-left: 12px;
+    border-left: 4px solid #04c0ff;
+  }
+
+  /* grid 2×2 */
+  .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+  }
+
+  /* tarjeta clara */
+  .faq-card {
+    grid-column: span 6;
+    background: #f5f7fb;
+    border: 1px solid #e7eef6;
+    border-radius: 12px;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.15s ease,
+      border-color 0.2s ease;
+  }
+  .faq-card[data-open="true"] {
+    border-color: #9ee7ff;
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.26),
+      0 0 0 2px rgba(0, 191, 255, 0.18) inset;
+  }
+
+  /* header clickeable */
+  .faq-card__head {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+  }
+  .faq-card__q {
+    margin: 0 0 4px;
+    color: #0e2330;
+    font-weight: 900;
+  }
+  .faq-card__preview {
+    margin: 0;
+    color: #4a5a67;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  /* pastilla azul */
+  .faq-pill {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: #04c0ff;
+    color: #082430;
+    font-weight: 900;
+    box-shadow: 0 0 16px rgba(4, 192, 255, 0.45);
+    border: 1px solid #cfefff;
+  }
+
+  /* cuerpo expandible (repite respuesta) */
+  .faq-card__body {
+    padding: 0 16px 14px;
+    border-top: 1px solid #e7eef6;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+  .faq-card__a {
+    margin: 12px 0 0;
+    color: #2e3e4a;
+  }
+
+  /* responsive */
+  @media (max-width: 1024px) {
+    .faq-card {
+      grid-column: span 12;
+    }
+    .faq-title {
+      font-size: 20px;
+    }
+    .faq-logo {
+         height: 48px;
+    width: auto;
+    filter: drop-shadow(0 0 6px rgba(4, 192, 255, 0.4));
+    transition: transform 0.2s ease;
+  }
+</style>
